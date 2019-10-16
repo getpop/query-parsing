@@ -30,11 +30,13 @@ $ composer require getpop/query-parsing dev-master
 }
 ```
 
-<!-- ## Usage
+## Usage
 
 ```php
-
-``` -->
+use PoP\QueryParsing\Facades\Parsers\QueryParserFacade;
+$queryParser = QueryParserFacade::getInstance();
+$elements = $queryParser->splitElements($query, $separator, $skipFromChars, $skipUntilChars, $ignoreSkippingFromChar, $ignoreSkippingUntilChar);
+```
 
 ## Change log
 

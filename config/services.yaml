@@ -2,3 +2,6 @@ parameters:
     version: '0.1.0'
 
 services:
+    query_parser:
+        class: \PoP\QueryParsing\Parsers\QueryParser
+        public: true
