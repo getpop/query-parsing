@@ -3,5 +3,5 @@ parameters:
 
 services:
     query_parser:
-        class: \PoP\QueryParsing\Parsers\QueryParser
+        class: \PoP\QueryParsing\QueryParser
         public: true

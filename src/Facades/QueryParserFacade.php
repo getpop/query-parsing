@@ -1,7 +1,7 @@
 <?php
-namespace PoP\QueryParsing\Facades\Parsers;
+namespace PoP\QueryParsing\Facades;
 
-use PoP\QueryParsing\Parsers\QueryParserInterface;
+use PoP\QueryParsing\QueryParserInterface;
 use PoP\Root\Container\ContainerBuilderFactory;
 
 class QueryParserFacade

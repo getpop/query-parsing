@@ -1,5 +1,5 @@
 <?php
-namespace PoP\QueryParsing\Parsers;
+namespace PoP\QueryParsing;
 
 interface QueryParserInterface
 {
