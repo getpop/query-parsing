@@ -9,7 +9,7 @@ class QueryParser implements QueryParserInterface
      * Eg 2: Split elements by ",": ?query=id,posts(ids:1175,1152).id|title
      * Taken from https://stackoverflow.com/a/1084924
      */
-    public function splitElements(string $query, string $separator = ',', $skipFromChars = '(', $skipUntilChars = ')', $ignoreSkippingFromChar = null, $ignoreSkippingUntilChar = null): array
+    public function splitElements(string $query, string $separator = ',', $skipFromChars = '(', $skipUntilChars = ')', $ignoreSkippingFromChar = null, $ignoreSkippingUntilChar = null, bool $onlyFirstOcurrence = false): array
     {
         $buffer = '';
         $stack = array();
@@ -84,6 +84,12 @@ class QueryParser implements QueryParserInterface
                     if ($buffer !== '') {
                         $stack[] = $buffer;
                         $buffer = '';
+                        // If we need only one occurrence, then already return.
+                        if ($onlyFirstOcurrence) {
+                            $restStr = substr($query, $i+1);
+                            $stack[] = $restStr;
+                            return $stack;
+                        }
                     }
                     continue;
                 }
