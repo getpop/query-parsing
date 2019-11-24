@@ -44,10 +44,21 @@ class QueryParser implements QueryParserInterface
             $skipUntilChars
         );
         // From the options we may indicate to stop after either the first or last occurrences are found
-        if ($options[QueryParserOptions::ONLY_FIRST_OCCURRENCE]) {
-            $onlyFirstOccurrence = true;
-        } elseif ($options[QueryParserOptions::ONLY_LAST_OCCURRENCE]) {
-            $onlyLastOccurrence = true;
+        $startFromEnd = false;
+        $onlyFirstOccurrence = $options[QueryParserOptions::ONLY_FIRST_OCCURRENCE] ?? false;
+        $startFromEnd = $options[QueryParserOptions::START_FROM_END] ?? false;
+        // If iterating right to left, we reverse the string, treat closing symbols as opening ones and vice versa, and then inverse once again the results just before returing them
+        if ($startFromEnd) {
+            // Reverse string
+            $query = strrev($query);
+            // Treat "skip" from symbols as until, and viceversa
+            $temp = $skipFromChars;
+            $skipFromChars = $skipUntilChars;
+            $skipUntilChars = $temp;
+            // Treat "ignore" from symbols as until, and viceversa
+            $temp = $ignoreSkippingFromChar;
+            $ignoreSkippingFromChar = $ignoreSkippingUntilChar;
+            $ignoreSkippingUntilChar = $temp;
         }
         $isInsideSkipFromUntilChars = [];
         $charPos=-1;
@@ -102,6 +113,10 @@ class QueryParser implements QueryParserInterface
                             if ($onlyFirstOccurrence) {
                                 $restStr = substr($query, $charPos+1);
                                 $stack[] = $restStr;
+                                if ($startFromEnd) {
+                                    // Reverse each result, and the order of the results
+                                    $stack = array_reverse(array_map('strrev', $stack));
+                                }
                                 return $stack;
                             }
                         }
@@ -113,6 +128,10 @@ class QueryParser implements QueryParserInterface
         }
         if ($buffer !== '') {
             $stack[] = $buffer;
+        }
+        if ($startFromEnd) {
+            // Reverse each result, and the order of the results
+            $stack = array_reverse(array_map('strrev', $stack));
         }
         return $stack;
     }
