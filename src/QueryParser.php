@@ -9,7 +9,7 @@ class QueryParser implements QueryParserInterface
      * Eg 2: Split elements by ",": ?query=id,posts(ids:1175,1152).id|title
      * Adapted from https://stackoverflow.com/a/1084924
      */
-    public function splitElements(string $query, string $separator = ',', $skipFromChars = '(', $skipUntilChars = ')', $ignoreSkippingFromChar = null, $ignoreSkippingUntilChar = null, bool $onlyFirstOcurrence = false): array
+    public function splitElements(string $query, string $separator = ',', $skipFromChars = '(', $skipUntilChars = ')', $ignoreSkippingFromChar = null, $ignoreSkippingUntilChar = null, array $options = []): array
     {
         $buffer = '';
         $stack = array();
@@ -43,6 +43,12 @@ class QueryParser implements QueryParserInterface
             $skipFromChars,
             $skipUntilChars
         );
+        // From the options we may indicate to stop after either the first or last occurrences are found
+        if ($options[QueryParserOptions::ONLY_FIRST_OCCURRENCE]) {
+            $onlyFirstOccurrence = true;
+        } elseif ($options[QueryParserOptions::ONLY_LAST_OCCURRENCE]) {
+            $onlyLastOccurrence = true;
+        }
         $isInsideSkipFromUntilChars = [];
         $charPos=-1;
         while ($charPos<$len-1) {
@@ -93,7 +99,7 @@ class QueryParser implements QueryParserInterface
                             $stack[] = $buffer;
                             $buffer = '';
                             // If we need only one occurrence, then already return.
-                            if ($onlyFirstOcurrence) {
+                            if ($onlyFirstOccurrence) {
                                 $restStr = substr($query, $charPos+1);
                                 $stack[] = $restStr;
                                 return $stack;
