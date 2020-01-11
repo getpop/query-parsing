@@ -1,7 +1,7 @@
 {
     "name": "getpop/query-parsing",
     "type": "library",
-    "description": "Component model for PoP, over which the component-based architecture is based",
+    "description": "Utilities to parse the query",
     "keywords": [
         "PoP",
         "query-parsing"
