@@ -61,8 +61,8 @@ class QueryParser implements QueryParserInterface
             $ignoreSkippingUntilChar = $temp;
         }
         $isInsideSkipFromUntilChars = [];
-        $charPos=-1;
-        while ($charPos<$len-1) {
+        $charPos = -1;
+        while ($charPos < $len - 1) {
             $charPos++;
             $char = $query[$charPos];
             if (in_array($char, $specialChars)) {
@@ -70,10 +70,10 @@ class QueryParser implements QueryParserInterface
                     // Search the closing symbol and shortcut to that position (eg: opening then closing quotes for strings)
                     // If it is not there, then treat this char as a normal char
                     // Eg: search:with some quote " is ok
-                    $restStrIgnoreSkippingUntilCharPos = strpos($query, $ignoreSkippingUntilChar, $charPos+1);
+                    $restStrIgnoreSkippingUntilCharPos = strpos($query, $ignoreSkippingUntilChar, $charPos + 1);
                     if ($restStrIgnoreSkippingUntilCharPos !== false) {
                         // Add this stretch of string into the buffer
-                        $buffer .= substr($query, $charPos, $restStrIgnoreSkippingUntilCharPos-$charPos+1);
+                        $buffer .= substr($query, $charPos, $restStrIgnoreSkippingUntilCharPos - $charPos + 1);
                         // Continue iterating from that position
                         $charPos = $restStrIgnoreSkippingUntilCharPos;
                         continue;
@@ -97,7 +97,7 @@ class QueryParser implements QueryParserInterface
                         // If there can only be one occurrence of "()", then ignore any "(" and ")" found in between other "()"
                         // Then, we can search by strings like this (notice that the ".", "(" and ")" inside the search are ignored):
                         // /api/?query=posts(searchfor:(.)).id|title
-                        $restStr = substr($query, $charPos+1);
+                        $restStr = substr($query, $charPos + 1);
                         $restStrEndBracketPos = strpos($restStr, $skipUntilChars[0]);
                         $restStrSeparatorPos = strpos($restStr, $separator);
                         if ($restStrEndBracketPos === false || ($restStrSeparatorPos >= 0 && $restStrEndBracketPos >= 0 && $restStrEndBracketPos > $restStrSeparatorPos)) {
@@ -111,7 +111,7 @@ class QueryParser implements QueryParserInterface
                             $buffer = '';
                             // If we need only one occurrence, then already return.
                             if ($onlyFirstOccurrence) {
-                                $restStr = substr($query, $charPos+1);
+                                $restStr = substr($query, $charPos + 1);
                                 $stack[] = $restStr;
                                 if ($startFromEnd) {
                                     // Reverse each result, and the order of the results
