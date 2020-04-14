@@ -7,13 +7,21 @@ namespace PoP\QueryParsing;
 class QueryParser implements QueryParserInterface
 {
     /**
-     * Parse elements by a separator, not failing whenever the separator is also inside the fieldArgs (i.e. inside the brackets "(" and ")")
+     * Parse elements by a separator, not failing whenever the separator
+     * is also inside the fieldArgs (i.e. inside the brackets "(" and ")")
      * Eg 1: Split elements by "|": ?query=id|posts(limit:3,order:title|ASC)
      * Eg 2: Split elements by ",": ?query=id,posts(ids:1175,1152).id|title
      * Adapted from https://stackoverflow.com/a/1084924
      */
-    public function splitElements(string $query, string $separator = ',', $skipFromChars = '(', $skipUntilChars = ')', $ignoreSkippingFromChar = null, $ignoreSkippingUntilChar = null, array $options = []): array
-    {
+    public function splitElements(
+        string $query,
+        string $separator = ',',
+        $skipFromChars = '(',
+        $skipUntilChars = ')',
+        $ignoreSkippingFromChar = null,
+        $ignoreSkippingUntilChar = null,
+        array $options = []
+    ): array {
         $buffer = '';
         $stack = array();
         $depth = 0;
@@ -40,7 +48,8 @@ class QueryParser implements QueryParserInterface
             $specialChars[] = $ignoreSkippingUntilChar;
         }
         $specialChars = array_unique($specialChars);
-        // If there is any character that is both in $skipFromChars and $skipUntilChars, then allow only 1 instance of it for starting/closing
+        // If there is any character that is both in $skipFromChars and $skipUntilChars,
+        // then allow only 1 instance of it for starting/closing
         // Potential eg: "%" for demarcating variables
         $skipFromUntilChars = array_intersect(
             $skipFromChars,
@@ -50,7 +59,9 @@ class QueryParser implements QueryParserInterface
         $startFromEnd = false;
         $onlyFirstOccurrence = $options[QueryParserOptions::ONLY_FIRST_OCCURRENCE] ?? false;
         $startFromEnd = $options[QueryParserOptions::START_FROM_END] ?? false;
-        // If iterating right to left, we reverse the string, treat closing symbols as opening ones and vice versa, and then inverse once again the results just before returing them
+        // If iterating right to left, we reverse the string, treat closing symbols
+        // as opening ones and vice versa, and then inverse once again the results
+        // just before returing them
         if ($startFromEnd) {
             // Reverse string
             $query = strrev($query);
@@ -70,7 +81,8 @@ class QueryParser implements QueryParserInterface
             $char = $query[$charPos];
             if (in_array($char, $specialChars)) {
                 if ($char == $ignoreSkippingFromChar) {
-                    // Search the closing symbol and shortcut to that position (eg: opening then closing quotes for strings)
+                    // Search the closing symbol and shortcut to that position
+                    // (eg: opening then closing quotes for strings)
                     // If it is not there, then treat this char as a normal char
                     // Eg: search:with some quote " is ok
                     $restStrIgnoreSkippingUntilCharPos = strpos($query, $ignoreSkippingUntilChar, $charPos + 1);
@@ -82,7 +94,8 @@ class QueryParser implements QueryParserInterface
                         continue;
                     }
                 } elseif (in_array($char, $skipFromUntilChars)) {
-                    // If first occurrence, flag that from now on we start ignoring the chars, so everything goes to the buffer
+                    // If first occurrence, flag that from now on we start ignoring the chars,
+                    // so everything goes to the buffer
                     if (!$isInsideSkipFromUntilChars[$char]) {
                         $isInsideSkipFromUntilChars[$char] = true;
                         $depth++;
@@ -97,13 +110,21 @@ class QueryParser implements QueryParserInterface
                     if ($depth) {
                         $depth--;
                     } else {
-                        // If there can only be one occurrence of "()", then ignore any "(" and ")" found in between other "()"
-                        // Then, we can search by strings like this (notice that the ".", "(" and ")" inside the search are ignored):
+                        // If there can only be one occurrence of "()", then ignore
+                        // any "(" and ")" found in between other "()"
+                        // Then, we can search by strings like this (notice that the ".", "(" and ")"
+                        // inside the search are ignored):
                         // /api/?query=posts(searchfor:(.)).id|title
                         $restStr = substr($query, $charPos + 1);
                         $restStrEndBracketPos = strpos($restStr, $skipUntilChars[0]);
                         $restStrSeparatorPos = strpos($restStr, $separator);
-                        if ($restStrEndBracketPos === false || ($restStrSeparatorPos >= 0 && $restStrEndBracketPos >= 0 && $restStrEndBracketPos > $restStrSeparatorPos)) {
+                        if ($restStrEndBracketPos === false
+                            || (
+                                $restStrSeparatorPos >= 0
+                                && $restStrEndBracketPos >= 0
+                                && $restStrEndBracketPos > $restStrSeparatorPos
+                            )
+                        ) {
                             $depth--;
                         }
                     }

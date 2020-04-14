@@ -6,5 +6,12 @@ namespace PoP\QueryParsing;
 
 interface QueryParserInterface
 {
-    public function splitElements(string $query, string $separator = ',', $skipFromChars = '(', $skipUntilChars = ')', $ignoreSkippingFromChar = null, $ignoreSkippingUntilChar = null): array;
+    public function splitElements(
+        string $query,
+        string $separator = ',',
+        $skipFromChars = '(',
+        $skipUntilChars = ')',
+        $ignoreSkippingFromChar = null,
+        $ignoreSkippingUntilChar = null
+    ): array;
 }
