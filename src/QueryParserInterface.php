@@ -12,6 +12,7 @@ interface QueryParserInterface
         $skipFromChars = '(',
         $skipUntilChars = ')',
         $ignoreSkippingFromChar = null,
-        $ignoreSkippingUntilChar = null
+        $ignoreSkippingUntilChar = null,
+        array $options = []
     ): array;
 }
