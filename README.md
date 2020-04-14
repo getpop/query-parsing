@@ -16,18 +16,7 @@ Component which provides the syntax for data-fields, and parses them to obtain t
 Via Composer
 
 ``` bash
-composer require getpop/query-parsing dev-master
-```
-
-**Note:** Your `composer.json` file must have the configuration below to accept minimum stability `"dev"` (there are no releases for PoP yet, and the code is installed directly from the `master` branch):
-
-```javascript
-{
-    ...
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    ...
-}
+composer require getpop/query-parsing
 ```
 
 ## Usage
