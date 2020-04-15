@@ -56,7 +56,6 @@ class QueryParser implements QueryParserInterface
             $skipUntilChars
         );
         // From the options we may indicate to stop after either the first or last occurrences are found
-        $startFromEnd = false;
         $onlyFirstOccurrence = $options[QueryParserOptions::ONLY_FIRST_OCCURRENCE] ?? false;
         $startFromEnd = $options[QueryParserOptions::START_FROM_END] ?? false;
         // If iterating right to left, we reverse the string, treat closing symbols
