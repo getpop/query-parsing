@@ -1,2 +1,2 @@
 <?php
-\PoP\QueryParsing\Component::init();
+//\PoP\QueryParsing\Component::initialize();
