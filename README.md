@@ -22,6 +22,14 @@ composer require getpop/query-parsing
 
 ## Usage
 
+Initialize the component:
+
+``` php
+\PoP\QueryParsing\Component::initialize();
+```
+
+Use it:
+
 ```php
 use PoP\QueryParsing\Facades\QueryParserFacade;
 $queryParser = QueryParserFacade::getInstance();
