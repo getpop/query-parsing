@@ -25,7 +25,9 @@ composer require getpop/query-parsing
 Initialize the component:
 
 ``` php
-\PoP\QueryParsing\Component::initialize();
+\PoP\Root\ComponentLoader::initializeComponents([
+    \PoP\QueryParsing\Component::class,
+]);
 ```
 
 Use it:
