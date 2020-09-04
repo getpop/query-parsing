@@ -11,6 +11,10 @@ class QueryParserFacade
 {
     public static function getInstance(): QueryParserInterface
     {
-        return ContainerBuilderFactory::getInstance()->get('query_parser');
+        /**
+         * @var QueryParserInterface
+         */
+        $service = ContainerBuilderFactory::getInstance()->get('query_parser');
+        return $service;
     }
 }
