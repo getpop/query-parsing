@@ -14,7 +14,7 @@ class QueryParserFacade
         /**
          * @var QueryParserInterface
          */
-        $service = ContainerBuilderFactory::getInstance()->get('query_parser');
+        $service = ContainerBuilderFactory::getInstance()->get(QueryParserInterface::class);
         return $service;
     }
 }
